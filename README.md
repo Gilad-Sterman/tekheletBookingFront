@@ -1,16 +1,43 @@
-# React + Vite
+# Tekhelet Booking — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React frontend for the Tekhelet tour booking system. Built with Vite and connected to the Node.js/Express backend.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 19
+- Vite
+- Redux
+- React Router
+- Axios
+- FullCalendar
+- SCSS
 
-## React Compiler
+## Development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm install
+npm run dev
+```
 
-## Expanding the ESLint configuration
+The dev server proxies `/api` to `http://localhost:3030`.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Build
+
+```bash
+npm run build
+```
+
+Production build is output to `../server/public` so the backend can serve it.
+
+## Project Structure
+
+- `src/components` — React components (Calendar, TourForm, Dashboard, etc.)
+- `src/services` — API and config services
+- `src/assets/styles` — SCSS, organized by component
+- `src/context` — Auth context
+- `src/hooks` — Custom hooks
+
+## Notes
+
+- No sensitive credentials are committed; auth tokens are stored in `localStorage`.
+- Keep the backend (`../server`) running for API calls during local development.
