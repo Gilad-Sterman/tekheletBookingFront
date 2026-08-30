@@ -1,0 +1,110 @@
+@use 'vars' as *;
+@use 'mixins' as *;
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: $clr-bg-main;
+    color: $clr-text-main;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color $trans-fast;
+
+    // &:hover {
+    //     color: $clr-primary;
+    // }
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font: inherit;
+    transition: all $trans-fast;
+    user-select: none;
+
+    &:disabled {
+        cursor: default;
+        opacity: 0.5;
+    }
+}
+
+input,
+select,
+textarea {
+    font: inherit;
+    color: inherit;
+}
+
+.flex-center {
+    @include flex-center;
+}
+
+.flex-column {
+    @include flex-column;
+}
+
+.flex-between {
+    @include flex-between;
+}
+
+.btn-primary {
+    padding: $spacing-sm $spacing-lg;
+    background-color: $clr-primary;
+    color: white;
+    border-radius: $br-md;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: $spacing-xs;
+    @include shadow-hover;
+
+    &:hover {
+        background-color: $clr-primary-dark;
+    }
+}
+
+.btn-danger {
+    background-color: $clr-error;
+    color: white;
+    border: none;
+
+    &:hover {
+        background-color: darken($clr-error, 10%);
+        @include shadow-hover;
+    }
+}
+
+button {
+    padding: 10px 24px;
+    border-radius: $br-md;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all $trans-fast;
+
+    @include for-mobile {
+        padding: $spacing-sm $spacing-md;
+        font-size: 0.9rem;
+        width: auto;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

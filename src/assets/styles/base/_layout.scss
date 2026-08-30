@@ -1,0 +1,44 @@
+@use 'vars' as *;
+@use 'mixins' as *;
+
+.main-layout {
+    display: grid;
+    grid-template-columns: minmax($spacing-md, 1fr) minmax(auto, $bp-desktop) minmax($spacing-md, 1fr);
+
+    &>* {
+        grid-column: 1 / -1;
+    }
+
+    &>.full {
+        grid-column: 1 / -1;
+    }
+
+    @include for-mobile {
+        grid-template-columns: $spacing-sm 1fr $spacing-sm;
+    }
+}
+
+.container {
+    max-width: $bp-desktop;
+    margin: 0 auto;
+    padding: 0 $spacing-md;
+
+    &.full {
+        max-width: 100%;
+    }
+
+    @include for-mobile {
+        padding: 0 $spacing-sm;
+    }
+}
+
+.card {
+    background-color: $clr-bg-card;
+    padding: $spacing-lg;
+    border-radius: $br-lg;
+    box-shadow: $shadow-soft;
+
+    @include for-mobile {
+        padding: $spacing-md;
+    }
+}

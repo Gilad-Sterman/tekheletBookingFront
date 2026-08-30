@@ -1,0 +1,419 @@
+@use '../base/vars' as *;
+@use '../base/mixins' as *;
+
+.calendar-page-layout {
+    padding: $spacing-lg;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: $spacing-lg;
+    align-items: start;
+
+    @include for-mobile {
+        padding: $spacing-sm;
+        grid-template-columns: 1fr;
+    }
+
+    // Header spans both columns on desktop, single flex row
+    .calendar-header {
+        grid-column: 1 / -1;
+        padding: $spacing-sm;
+        background-color: #f9fafb;
+        border-radius: $br-lg;
+        border: 1px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+
+        @include for-mobile {
+            order: 1;
+            flex-direction: column;
+            align-items: stretch;
+            gap: $spacing-xs;
+        }
+
+        // On desktop these are transparent — their children become direct flex items
+        // On mobile they become real flex rows
+        .header-main-row,
+        .header-secondary-row {
+            display: contents;
+
+            @include for-mobile {
+                display: flex;
+                align-items: center;
+                gap: $spacing-xs;
+            }
+        }
+
+        .header-main-row {
+            @include for-mobile {
+                .header-search-wrapper {
+                    flex: 1;
+                }
+            }
+        }
+
+        .header-secondary-row {
+            @include for-mobile {
+                justify-content: flex-end;
+            }
+        }
+
+        // Buttons: compact on mobile, text visible, icons hidden
+        .btn-primary,
+        a.btn-primary {
+            @include for-mobile {
+                width: auto;
+                padding: $spacing-xs $spacing-sm;
+                font-size: 0.78rem;
+                white-space: nowrap;
+
+                svg {
+                    display: none;
+                }
+            }
+        }
+
+        .header-search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+
+            .header-search {
+                padding: 7px 30px 7px 10px;
+                font-size: 0.82rem;
+                border: 1px solid #d1d5db;
+                border-radius: $br-md;
+                background: #fff;
+                color: $clr-text;
+                outline: none;
+                width: 160px;
+                transition: width 0.2s ease, border-color 0.15s;
+
+                &:focus {
+                    width: 200px;
+                    border-color: $clr-primary;
+                    box-shadow: 0 0 0 2px rgba($clr-primary, 0.15);
+                }
+
+                &::placeholder {
+                    color: #9ca3af;
+                }
+
+                @include for-mobile {
+                    width: 100%;
+
+                    &:focus {
+                        width: 100%;
+                    }
+                }
+            }
+
+            .header-search-clear {
+                position: absolute;
+                right: 7px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                cursor: pointer;
+                font-size: 1rem;
+                line-height: 1;
+                color: #6b7280;
+                padding: 0;
+                width: auto;
+
+                &:hover {
+                    color: $clr-primary;
+                }
+            }
+        }
+    }
+
+    // Sidebar second on mobile (below header, above calendar)
+    aside {
+        @include for-mobile {
+            order: 2;
+        }
+    }
+
+    .fc-toolbar.fc-header-toolbar {
+        @include for-mobile {
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 6px !important;
+        }
+    }
+
+    .fc-toolbar-title {
+        @include for-mobile {
+            font-size: 0.9rem !important;
+        }
+    }
+
+    .fc-button.fc-button-primary {
+        @include for-mobile {
+            padding: 3px 6px !important;
+            font-size: 0.7rem !important;
+        }
+    }
+
+    .fc-timeGridDay-button {
+        @include for-mobile {
+            display: inline-flex !important;
+        }
+    }
+
+    .calendar-main-column {
+        min-width: 0;
+
+        @include for-mobile {
+            order: 3;
+        }
+
+        .calendar-wrapper {
+            background-color: white;
+            padding: $spacing-md;
+            border-radius: $br-lg;
+            border: 1px solid #e5e7eb;
+            box-shadow: $shadow-soft;
+
+            @include for-mobile {
+                padding: $spacing-xs;
+                border-radius: $br-md;
+            }
+        }
+    }
+}
+
+.calendar-container {
+    background-color: $clr-bg-card;
+    padding: $spacing-lg;
+    border-radius: $br-lg;
+    box-shadow: $shadow-md;
+    margin-bottom: $spacing-xl;
+
+    @include for-mobile {
+        padding: $spacing-sm;
+        margin-bottom: $spacing-md;
+    }
+
+    .calendar-actions {
+        margin-bottom: $spacing-md;
+
+        .btn-primary {
+            padding: $spacing-sm $spacing-lg;
+            background-color: $clr-primary;
+            color: white;
+            border-radius: $br-md;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: $spacing-xs;
+            @include shadow-hover;
+
+            &:hover {
+                background-color: $clr-primary-dark;
+            }
+        }
+    }
+
+    .fc {
+        font-family: inherit;
+        --fc-border-color: #e2e8f0;
+        --fc-today-bg-color: rgba(59, 130, 246, 0.05);
+        border: none;
+
+        .fc-toolbar-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: $clr-secondary;
+        }
+
+        .fc-button-primary {
+            background-color: white;
+            border-color: #e2e8f0;
+            color: $clr-text-main;
+            text-transform: capitalize;
+            font-weight: 500;
+            box-shadow: $shadow-soft;
+            transition: all $trans-fast;
+
+            &:hover {
+                background-color: #f8fafc;
+                border-color: #cbd5e1;
+                color: $clr-primary;
+            }
+
+            &:focus {
+                box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+            }
+
+            &.fc-button-active {
+                background-color: $clr-primary !important;
+                border-color: $clr-primary !important;
+                color: white !important;
+            }
+        }
+
+        .fc-col-header-cell {
+            background-color: #f8fafc;
+            padding: $spacing-sm 0;
+            font-weight: 600;
+            color: $clr-text-muted;
+        }
+
+        .fc-event {
+            border: none;
+            border-radius: $br-sm;
+            padding: 2px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            box-shadow: $shadow-soft;
+            transition: transform $trans-fast;
+
+            &:hover {
+                transform: scale(1.02);
+                z-index: 5;
+            }
+
+        }
+
+    }
+
+}
+
+.custom-event-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 1px 2px;
+    overflow: hidden;
+
+    .event-main {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+
+        .event-title {
+            font-weight: 700;
+            font-size: 0.8rem;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+
+        .event-time {
+            font-size: 0.65rem;
+            font-weight: 600;
+            opacity: 0.9;
+            line-height: 1;
+            // color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .event-meta {
+        display: flex;
+        gap: 3px;
+        flex-wrap: wrap;
+
+        .event-info-pill {
+            font-size: 0.6rem;
+            padding: 0 4px;
+            border-radius: 3px;
+            background-color: rgba(255, 255, 255, 0.25);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            white-space: nowrap;
+
+            &.lang {
+                background-color: rgba(0, 0, 0, 0.15);
+            }
+
+            &.workshop {
+                background-color: #f59e0b;
+                color: #fff;
+            }
+
+            &.guide {
+                max-width: 50px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            &.people {
+                &.paid {
+                    background-color: #22c55e;
+                    color: #fff;
+                }
+
+                &.partial {
+                    background-color: #f59e0b;
+                    color: #fff;
+                }
+
+                &.unpaid {
+                    background-color: #ef4444;
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+.custom-event-content.cancelled-tour {
+    opacity: 0.65;
+    background-color: rgba(254, 242, 242, 0.9);
+
+    .event-title {
+        text-decoration: line-through;
+        color: #991b1b;
+    }
+}
+
+.custom-event-content.info-message-event {
+    background-color: transparent !important;
+    padding-left: 6px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+
+    .event-title {
+        font-weight: 600;
+        font-size: 0.75rem;
+        color: #1e293b;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        svg {
+            opacity: 0.7;
+        }
+    }
+
+    .event-time {
+        font-weight: 500;
+        font-size: 0.65rem;
+        color: #64748b;
+        opacity: 0.9;
+        text-shadow: none;
+    }
+}
+
+.tour-item.cancelled-tour {
+    opacity: 0.7;
+    background-color: #fafafa;
+    border-left-color: #dc2626 !important;
+
+    .tour-title {
+        // text-decoration: line-through;
+        color: #9c1c1c;
+    }
+}

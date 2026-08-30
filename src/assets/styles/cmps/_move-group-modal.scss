@@ -1,0 +1,301 @@
+@use '../base/vars' as *;
+@use '../base/mixins' as *;
+
+.move-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 2500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media (max-width: $bp-tablet) {
+        align-items: flex-end;
+    }
+}
+
+.move-modal {
+    background: $clr-bg-card;
+    border-radius: $br-lg;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: $shadow-strong;
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+
+    @media (max-width: $bp-tablet) {
+        border-radius: $br-lg $br-lg 0 0;
+        max-width: 100%;
+        max-height: 92vh;
+    }
+
+    &-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $spacing-md $spacing-lg;
+        border-bottom: 1px solid $clr-border;
+        flex-shrink: 0;
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: $clr-text-main;
+            margin: 0;
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: $clr-text-muted;
+            padding: $spacing-xs;
+            border-radius: $br-sm;
+            display: flex;
+            align-items: center;
+            transition: color $trans-fast;
+
+            &:hover {
+                color: $clr-text-main;
+            }
+        }
+    }
+
+    &-body {
+        padding: $spacing-lg;
+        overflow-y: auto;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-md;
+    }
+
+    &-footer {
+        display: flex;
+        gap: $spacing-sm;
+        justify-content: flex-end;
+        padding: $spacing-md $spacing-lg;
+        border-top: 1px solid $clr-border;
+        flex-shrink: 0;
+
+        @media (max-width: $bp-mobile) {
+            flex-direction: column-reverse;
+
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    }
+}
+
+.move-group-name {
+    font-weight: 600;
+    color: $clr-primary;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.move-warning {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    border-radius: $br-md;
+    padding: $spacing-sm $spacing-md;
+    font-size: 0.85rem;
+    color: #92400e;
+    line-height: 1.5;
+}
+
+.move-date-section {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: $clr-text-muted;
+    }
+
+    input[type="date"] {
+        width: 100%;
+        padding: $spacing-sm $spacing-md;
+        border: 1px solid $clr-border;
+        border-radius: $br-md;
+        font-size: 0.95rem;
+        color: $clr-text-main;
+        background: $clr-bg-main;
+        cursor: pointer;
+
+        &:focus {
+            outline: none;
+            border-color: $clr-primary;
+        }
+    }
+}
+
+.move-tours-list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+
+    >label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: $clr-text-muted;
+    }
+}
+
+.destination-options {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+}
+
+.destination-option {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $clr-border;
+    border-radius: $br-md;
+    background: $clr-bg-main;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color $trans-fast, background $trans-fast;
+    width: 100%;
+
+    &:hover {
+        border-color: $clr-primary;
+        background: lighten($clr-bg-main, 2%);
+    }
+
+    &.selected {
+        border-color: $clr-primary;
+        background: rgba($clr-primary, 0.06);
+    }
+
+    .dest-title {
+        flex: 1;
+        font-weight: 500;
+        color: $clr-text-main;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .dest-time {
+        font-size: 0.78rem;
+        color: $clr-text-muted;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .dest-groups {
+        font-size: 0.75rem;
+        color: $clr-text-secondary;
+        background: $clr-border;
+        padding: 2px 6px;
+        border-radius: $br-sm;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    &--new {
+        border-style: dashed;
+        color: $clr-primary;
+        font-weight: 500;
+        font-size: 0.9rem;
+        justify-content: center;
+
+        &.selected {
+            border-style: solid;
+            background: rgba($clr-primary, 0.08);
+        }
+    }
+}
+
+.move-new-tour-time {
+    padding: $spacing-sm $spacing-lg;
+    background: rgba($clr-primary, 0.04);
+    border-top: 1px solid rgba($clr-primary, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    position: relative;
+
+    input {
+        padding: 8px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background-color: #f8fafc;
+        font-size: 0.95rem 15.2px;
+        transition: all 0.15s ease-in-out;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box
+    }
+
+    label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: $clr-text-muted;
+    }
+}
+
+.move-time-row {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+
+    .time-input-wrapper {
+        width: 120px;
+        flex-shrink: 0;
+    }
+
+    .move-time-end {
+        font-size: 0.85rem;
+        color: $clr-text-muted;
+    }
+}
+
+.no-tours-on-date {
+    font-size: 0.85rem;
+    color: $clr-text-muted;
+    font-style: italic;
+    text-align: center;
+    padding: $spacing-sm 0;
+}
+
+.btn-icon-move {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $clr-primary;
+    padding: 4px;
+    border-radius: $br-sm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background $trans-fast, color $trans-fast;
+
+    &:hover {
+        background: rgba($clr-primary, 0.1);
+        color: $clr-primary-dark;
+    }
+}
+
+.group-card-actions {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+}

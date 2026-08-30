@@ -1,0 +1,144 @@
+@use '../base/vars' as *;
+@use '../base/mixins' as *;
+
+.upcoming-tours-sidebar {
+    background-color: $clr-bg-card;
+    border-radius: $br-lg;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+    height: fit-content;
+
+    @include for-mobile {
+        max-height: 320px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar-header {
+        padding: $spacing-md;
+        border-bottom: 1px solid #e5e7eb;
+        background-color: #f8fafc;
+
+        h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+            color: $clr-secondary;
+        }
+    }
+
+    .tours-list {
+        padding: $spacing-sm;
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-sm;
+
+        @include for-mobile {
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .tour-item {
+            padding: 12px;
+            border-radius: $br-md;
+            border: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: all $trans-fast;
+            background-color: #ffffff;
+
+            @include for-mobile {
+                padding: $spacing-xs $spacing-sm;
+            }
+
+            &:hover {
+                background-color: #f8fafc;
+                border-color: #e2e8f0;
+                transform: translateX(4px);
+            }
+
+            .tour-meta {
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: $clr-text-muted;
+                margin-bottom: 4px;
+            }
+
+            .tour-title {
+                font-size: 0.9rem;
+                font-weight: 700;
+                color: $clr-text-main;
+                margin-bottom: 4px;
+                @include line-clamp(1);
+            }
+
+            .tour-stats {
+                display: flex;
+                flex-wrap: wrap;
+                gap: $spacing-xs $spacing-sm;
+                margin-top: $spacing-xs;
+
+                .workshop-tag {
+                    font-size: 0.65rem;
+                    font-weight: 700;
+                    background-color: #f59e0b;
+                    color: #fff;
+                    padding: 1px 4px;
+                    border-radius: 3px;
+                }
+
+                .lang-tag,
+                .people-tag {
+                    font-size: 0.7rem;
+                    font-weight: 600;
+                    color: $clr-text-muted;
+                    display: flex;
+                    align-items: center;
+                    gap: 3px;
+                }
+
+                .lang-tag {
+                    color: $clr-primary;
+                }
+
+                .groups-tag {
+                    font-size: 0.7rem;
+                    font-weight: 600;
+                    color: $clr-text-muted;
+                    display: flex;
+                    align-items: center;
+                    gap: 3px;
+                    opacity: 0.85;
+                }
+
+                .payment-tag {
+                    font-size: 0.65rem;
+                    font-weight: 700;
+                    padding: 1px 4px;
+                    border-radius: 3px;
+
+                    &.paid {
+                        background-color: #dcfce7;
+                        color: #166534;
+                    }
+
+                    &.partial {
+                        background-color: #fef3c7;
+                        color: #92400e;
+                    }
+
+                    &.unpaid {
+                        background-color: #fee2e2;
+                        color: #991b1b;
+                    }
+                }
+            }
+        }
+
+        .no-tours {
+            padding: $spacing-xl;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+    }
+}

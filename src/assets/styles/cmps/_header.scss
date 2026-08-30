@@ -1,0 +1,97 @@
+@use '../base/vars' as *;
+@use '../base/mixins' as *;
+
+.main-layout {
+    .main-header {
+        padding: $spacing-lg $spacing-xl;
+        background: $clr-bg-card;
+        box-shadow: $shadow-soft;
+        margin-bottom: $spacing-xl;
+
+        @include for-mobile {
+            padding: $spacing-sm $spacing-md;
+            margin-bottom: $spacing-sm;
+        }
+
+        .logo-link {
+            text-decoration: none;
+            color: inherit;
+            transition: opacity $trans-fast;
+
+            &:hover {
+                opacity: 0.8;
+            }
+
+            .logo-section {
+                gap: $spacing-md;
+
+                img {
+                    height: 45px;
+                    border-radius: $br-md;
+                    object-fit: cover;
+
+                    @include for-mobile {
+                        height: 32px;
+                    }
+                }
+
+                h1 {
+                    font-size: 1.25rem;
+                    font-weight: 800;
+                    color: $clr-secondary;
+                    letter-spacing: -0.025em;
+
+                    @include for-mobile {
+                        font-size: 0.95rem;
+                    }
+
+                    span {
+                        color: $clr-primary;
+                    }
+                }
+            }
+        }
+
+        .user-nav {
+            gap: 20px;
+
+            @include for-mobile {
+                gap: $spacing-sm;
+            }
+
+            .user-info {
+                text-align: right;
+
+                .user-name {
+                    font-size: 0.85rem;
+                    font-weight: 700;
+                    color: $clr-text-main;
+                    line-height: 1;
+                    margin: 0;
+                }
+
+                .user-role {
+                    font-size: 0.7rem;
+                    color: $clr-text-muted;
+                    margin: 0;
+                }
+            }
+
+            .btn-logout {
+                padding: $spacing-sm;
+                border-radius: $br-md;
+                border: 1px solid #e2e8f0;
+                background: #f8fafc;
+                cursor: pointer;
+                color: $clr-text-muted;
+                transition: all $trans-fast;
+
+                &:hover {
+                    background: #f1f5f9;
+                    color: $clr-primary;
+                    border-color: #cbd5e1;
+                }
+            }
+        }
+    }
+}

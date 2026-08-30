@@ -1,0 +1,48 @@
+// Colors - Premium Palette
+$clr-primary: #134869; // Modern Blue
+$clr-primary-dark: #165880;
+$clr-secondary: #0f172a; // Deep Navy
+$clr-accent: #f59e0b; // Amber
+
+$clr-success: #10b981;
+$clr-error: #ef4444;
+
+$clr-bg-main: #f1f5f9;
+$clr-bg-card: #ffffff;
+$clr-bg-light: #ffffff;
+$clr-border: #e2e8f0;
+
+$clr-text-main: #1e293b;
+$clr-text: #1e293b;
+$clr-text-primary: #1e293b;
+$clr-text-muted: #64748b;
+$clr-text-secondary: #94a3b8;
+$clr-text-light: #f8fafc;
+
+// Spacing - 8pt Grid
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-xxl: 48px;
+
+// Breakpoints
+$bp-mobile: 480px;
+$bp-tablet: 768px;
+$bp-desktop: 1024px;
+
+// Refined Shadows
+$shadow-soft: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+$shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+$shadow-strong: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+// Border Radius
+$br-sm: 4px;
+$br-md: 8px;
+$br-lg: 12px;
+$br-xl: 24px;
+
+// Transitions
+$trans-fast: 0.15s ease-in-out;
+$trans-normal: 0.3s ease-in-out;

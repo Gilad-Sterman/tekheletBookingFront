@@ -1,0 +1,109 @@
+@use '../base/vars' as *;
+@use '../base/mixins' as *;
+
+.time-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    .time-input-field {
+        flex: 1;
+        min-width: 0;
+        padding-right: 32px;
+        cursor: pointer;
+
+        &:focus {
+            cursor: text;
+        }
+    }
+
+    .time-input-chevron {
+        position: absolute;
+        right: $spacing-xs;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        padding: 4px;
+        color: $clr-text-muted;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: $br-sm;
+        transition: color $trans-fast;
+        width: auto;
+
+        &:hover:not(:disabled) {
+            color: $clr-primary;
+        }
+    }
+
+    .time-input-dropdown {
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        max-height: 200px;
+        overflow-y: auto;
+        background: $clr-bg-card;
+        border: 1px solid $clr-border;
+        border-radius: $br-md;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        z-index: 200;
+        list-style: none;
+        margin: 0;
+        padding: $spacing-xs 0;
+        scrollbar-width: thin;
+        scrollbar-color: $clr-border transparent;
+
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: $clr-border;
+            border-radius: 4px;
+        }
+    }
+
+    .time-option {
+        padding: 8px $spacing-md;
+        cursor: pointer;
+        font-size: 0.9rem;
+        color: $clr-text-main;
+        transition: background $trans-fast;
+        user-select: none;
+
+        &:hover {
+            background-color: $clr-bg-main;
+        }
+
+        &.time-option-selected {
+            background-color: $clr-primary;
+            color: white;
+            font-weight: 600;
+        }
+    }
+
+    &.disabled {
+        .time-input-field {
+            cursor: default;
+        }
+
+        .time-input-chevron {
+            display: none;
+        }
+    }
+
+    &.open .time-input-field {
+        border-color: $clr-primary;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba($clr-primary, 0.15);
+    }
+}
