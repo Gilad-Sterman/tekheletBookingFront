@@ -684,7 +684,7 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
             timeStr,
             formData.isWorkshop ? 'Workshop included' : null,
             '',
-            `Group: ${group.name || `Group ${idx + 1}`}${group.type ? ` (${group.type})` : ''}`,
+            `Group: ${group.name || `Group ${idx + 1}`}`,
             group.status ? `Status: ${group.status}` : null,
             contact.leaderName ? `Leader: ${contact.leaderName}` : null,
             contact.leaderPhone ? `Phone: ${contact.leaderPhone}` : null,
@@ -692,8 +692,7 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
             contact.externalGuideName ? `External Guide: ${contact.externalGuideName}` : null,
             contact.externalGuidePhone ? `Guide Phone: ${contact.externalGuidePhone}` : null,
             '',
-            `Participants: ${parts.length ? parts.join(', ') : 'None recorded'}`,
-            `Total: ${total}`,
+            `Participants: ${parts.length ? parts.join(', ') : 'None recorded'}`, 
         ].filter(l => l !== null).join('\n');
         copyText(lines).then(() => {
             setCopiedGroupIdx(idx);
