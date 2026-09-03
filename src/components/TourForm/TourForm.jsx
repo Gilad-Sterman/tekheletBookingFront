@@ -1033,7 +1033,7 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
                                         </div>
                                     </div>
                                     {/* <p className="contact-required-hint">* Phone or email required</p> */}
-                                    <div className="form-row primary-group-row">
+                                    <div className="form-row primary-group-row status-paid-row">
                                         <div className="form-group primary-form-group">
                                             <label>Status</label>
                                             <select name="status" value={formData.groups[0]?.status || 'Scheduled'} onChange={(e) => handleChange(e, 0)}>
@@ -1050,6 +1050,10 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
                                                 )}
                                             </select>
                                         </div>
+                                        <label className="checkbox-label prepaid-inline">
+                                            <input type="checkbox" name="booking.prepaid" checked={formData.groups[0]?.booking?.prepaid || false} onChange={(e) => handleChange(e, 0)} />
+                                            <span>{formData.groups[0]?.booking?.prepaid ? 'Paid' : 'Unpaid'}</span>
+                                        </label>
                                     </div>
                                     <div className="external-guide-section">
                                         <button type="button" className="external-guide-toggle" onClick={() => toggleExtGuide(0)}>
@@ -1163,7 +1167,7 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
                                                     </div>
                                                 </div>
                                                 {/* <p className="contact-required-hint">* Phone or email required</p> */}
-                                                <div className="form-row counters">
+                                                <div className="form-row counters status-paid-row">
                                                     <div className="form-group primary-form-group">
                                                         <label>Status</label>
                                                         <select name="status" value={group.status} onChange={(e) => handleChange(e, idx)}>
@@ -1180,6 +1184,10 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
                                                             )}
                                                         </select>
                                                     </div>
+                                                    <label className="checkbox-label prepaid-inline">
+                                                        <input type="checkbox" name="booking.prepaid" checked={group.booking?.prepaid || false} onChange={(e) => handleChange(e, idx)} />
+                                                        <span>{group.booking?.prepaid ? 'Paid' : 'Unpaid'}</span>
+                                                    </label>
                                                 </div>
                                                 <div className="external-guide-section">
                                                     <button type="button" className="external-guide-toggle" onClick={() => toggleExtGuide(idx)}>
