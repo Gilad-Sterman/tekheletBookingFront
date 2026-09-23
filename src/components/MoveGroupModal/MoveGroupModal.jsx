@@ -45,7 +45,7 @@ const MoveGroupModal = ({ group, sourceTourId, sourceTourDate, sourceTourStartTi
 
                 <div className="move-modal-body">
                     {group?.name && (
-                        <p className="move-group-name">"{group.name}"</p>
+                        <p className="move-group-name" dir="auto">"{group.name}"</p>
                     )}
 
                     {isOnlyGroup && (
@@ -77,7 +77,7 @@ const MoveGroupModal = ({ group, sourceTourId, sourceTourDate, sourceTourStartTi
                                         className={`destination-option ${selectedDestination === t._id ? 'selected' : ''}`}
                                         onClick={() => setSelectedDestination(t._id)}
                                     >
-                                        <span className="dest-title">{t.title}</span>
+                                        <span className="dest-title" dir="auto">{t.title}</span>
                                         <span className="dest-time">{t.startTime}–{t.endTime}</span>
                                         <span className="dest-groups">
                                             {t.groups?.length || 0} grp{t.groups?.length !== 1 ? 's' : ''}

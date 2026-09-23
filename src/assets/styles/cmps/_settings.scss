@@ -161,6 +161,49 @@
     }
 }
 
+// ── Settings form fields ──────────────────────────────────────────────────────
+
+.settings-fields {
+    @include flex-column;
+    gap: $spacing-md;
+}
+
+.settings-field {
+    @include flex-column;
+    gap: 4px;
+
+    label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: $clr-text-main;
+    }
+
+    input {
+        padding: $spacing-sm $spacing-md;
+        border: 1px solid $clr-border;
+        border-radius: $br-md;
+        font-size: 0.9rem;
+        color: $clr-text-main;
+        background: $clr-bg-main;
+        max-width: 320px;
+
+        &[type="number"] {
+            max-width: 120px;
+        }
+
+        &:focus {
+            outline: none;
+            border-color: $clr-primary;
+        }
+    }
+
+    &__hint {
+        font-size: 0.78rem;
+        color: $clr-text-muted;
+        line-height: 1.4;
+    }
+}
+
 // ── Banners ───────────────────────────────────────────────────────────────────
 
 .settings-banner {

@@ -164,6 +164,23 @@ class ConfigService {
     }
 
     /**
+     * Get email automation settings (reminder timing, post-tour timing, review link)
+     */
+    async getEmailAutomation() {
+        const configs = await this.getConfigurations();
+        return configs.email_automation || {};
+    }
+
+    /**
+     * Update a single config value (editable categories only — coordinator)
+     */
+    async updateConfigValue(category, key, value) {
+        const response = await api.put(`/config/${category}/${key}`, { value });
+        this.configurations = null; // invalidate cache so next read is fresh
+        return response.data;
+    }
+
+    /**
      * Clear cache - useful for forcing fresh data
      */
     clearCache() {

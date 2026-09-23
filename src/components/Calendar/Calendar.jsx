@@ -338,7 +338,7 @@ const Calendar = () => {
         return (
             <div className={`custom-event-content ${allGroupsCancelled ? 'cancelled-tour' : ''}`}>
                 <div className="event-main">
-                    <span className="event-title">{eventInfo.event.title}</span>
+                    <span className="event-title" dir="auto">{eventInfo.event.title}</span>
                     {timeRange && <span className="event-time">{timeRange}</span>}
                 </div>
                 <div className="event-meta">
@@ -488,7 +488,7 @@ const Calendar = () => {
                                     <div className="tour-meta">
                                         {new Date(tour.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', weekday: 'short' })} • {tour.startTime}
                                     </div>
-                                    <div className="tour-title">
+                                    <div className="tour-title" dir="auto">
                                         {tour.title}
                                         {allGroupsCancelled && <span className="cancelled" style={{ marginLeft: '6px', padding: '2px 4px', backgroundColor: '#fee2e2', color: '#dc2626', borderRadius: '4px', fontWeight: 'bold' }}>CANCELLED</span>}
                                     </div>

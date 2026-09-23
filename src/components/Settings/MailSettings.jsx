@@ -96,7 +96,7 @@ const MailSettings = ({ highlightConnected }) => {
             <div className="settings-card">
                 <div className="settings-card__header">
                     <Mail size={20} />
-                    <h2>Email Automation</h2>
+                    <h2>Mailbox Connection</h2>
                 </div>
                 <div className="settings-card__loading">
                     <Loader size={18} className="spin" />
@@ -110,7 +110,7 @@ const MailSettings = ({ highlightConnected }) => {
         <div className="settings-card">
             <div className="settings-card__header">
                 <Mail size={20} />
-                <h2>Email Automation</h2>
+                <h2>Mailbox Connection</h2>
             </div>
 
             {highlightConnected && status?.connected && (

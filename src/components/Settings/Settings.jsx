@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import MailSettings from './MailSettings';
+import AutomationSettings from './AutomationSettings';
 
 const Settings = () => {
     const location = useLocation();
@@ -31,6 +32,7 @@ const Settings = () => {
 
             <div className="settings-page__content">
                 <MailSettings highlightConnected={highlightConnected} />
+                <AutomationSettings />
             </div>
         </div>
     );

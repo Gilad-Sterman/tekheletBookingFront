@@ -5,6 +5,28 @@ import { X, ChevronDown, ChevronLeft, ChevronRight, Trash2, Copy, Check, ArrowRi
 import TimeInput from '../TimeInput/TimeInput';
 import MoveGroupModal from '../MoveGroupModal/MoveGroupModal';
 
+// Copy-to-clipboard labels per tour language (EN / HE).
+const COPY_LABELS = {
+    en: {
+        tour: 'Tour', untitled: 'Untitled Tour', noDate: 'No date set',
+        workshopIncluded: 'Workshop included', shiurIncluded: 'Shiur included',
+        group: 'Group', status: 'Status', leader: 'Leader', phone: 'Phone',
+        email: 'Email', extGuide: 'External Guide', guidePhone: 'Guide Phone',
+        participants: 'Participants', noneRecorded: 'None recorded',
+        regular: 'Regular', seniorSoldier: 'Senior/Soldier', child: 'Child',
+        groupTicket: 'Group (36₪)', total: 'Total', participantsWord: 'participants'
+    },
+    he: {
+        tour: 'סיור', untitled: 'סיור ללא שם', noDate: 'לא נקבע תאריך',
+        workshopIncluded: 'כולל סדנה', shiurIncluded: 'כולל שיעור',
+        group: 'קבוצה', status: 'סטטוס', leader: 'איש קשר', phone: 'טלפון',
+        email: 'אימייל', extGuide: 'מדריך חיצוני', guidePhone: 'טלפון מדריך',
+        participants: 'משתתפים', noneRecorded: 'לא הוזן',
+        regular: 'רגיל', seniorSoldier: 'אזרח ותיק/חייל', child: 'ילד',
+        groupTicket: 'קבוצה (36₪)', total: 'סה"כ', participantsWord: 'משתתפים'
+    }
+};
+
 const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave, onDelete, onCancel, onMoveGroup }) => {
     const isCoordinator = currentUser?.role === 'Coordinator';
     const canEdit = isCoordinator || (tour && tour.isTemplate);
@@ -615,22 +637,37 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
         }
     };
 
-    const handleCopy = () => {
-        const dateStr = formData.date
-            ? new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
-            : 'No date set';
+    const copyLang = () => (formData.language || '').toLowerCase().startsWith('heb') ? 'he' : 'en';
 
+    const formatCopyDate = (lang, L) => formData.date
+        ? new Date(formData.date + 'T12:00:00').toLocaleDateString(lang === 'he' ? 'he-IL' : 'en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+        : L.noDate;
+
+    const countParts = (counts, L) => {
+        const c = counts || {};
+        const parts = [];
+        if (c.regular) parts.push(`${c.regular} ${L.regular}`);
+        if (c.seniorSoldier) parts.push(`${c.seniorSoldier} ${L.seniorSoldier}`);
+        if (c.child) parts.push(`${c.child} ${L.child}`);
+        if (c.group) parts.push(`${c.group} ${L.groupTicket}`);
+        return parts;
+    };
+
+    const programLine = (L) => [
+        formData.isWorkshop ? L.workshopIncluded : null,
+        formData.isShiur ? L.shiurIncluded : null,
+    ].filter(Boolean).join(', ') || null;
+
+    const handleCopy = () => {
+        const lang = copyLang();
+        const L = COPY_LABELS[lang];
+        const dateStr = formatCopyDate(lang, L);
         const timeStr = `${formData.startTime || '--:--'} - ${formData.endTime || '--:--'}`;
 
         const groupLines = formData.groups.map((group, idx) => {
-            const c = group.counts || {};
-            const parts = [];
-            if (c.regular) parts.push(`${c.regular} Regular`);
-            if (c.seniorSoldier) parts.push(`${c.seniorSoldier} Senior/Soldier`);
-            if (c.child) parts.push(`${c.child} Child`);
-            if (c.group) parts.push(`${c.group} Group (36₪)`);
-            const name = group.name || `Group ${idx + 1}`;
-            return `Group ${idx + 1}: ${name}${parts.length ? ' - ' + parts.join(', ') : ''}`;
+            const parts = countParts(group.counts, L);
+            const name = group.name || `${L.group} ${idx + 1}`;
+            return `${L.group} ${idx + 1}: ${name}${parts.length ? ' - ' + parts.join(', ') : ''}`;
         }).join('\n');
 
         const total = formData.groups.reduce((sum, g) => {
@@ -639,14 +676,14 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
         }, 0);
 
         const text = [
-            `Tour: ${formData.title || 'Untitled Tour'}`,
+            `${L.tour}: ${formData.title || L.untitled}`,
             dateStr,
             timeStr,
-            formData.isWorkshop ? 'Workshop included' : null,
+            programLine(L),
             '',
             groupLines,
             '',
-            `Total: ${total} participants`,
+            `${L.total}: ${total} ${L.participantsWord}`,
         ].filter(l => l !== null).join('\n');
 
         copyText(text).then(() => {
@@ -667,32 +704,26 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
 
     const handleCopyGroup = (idx) => {
         const group = formData.groups[idx];
-        const dateStr = formData.date
-            ? new Date(formData.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
-            : 'No date set';
+        const lang = copyLang();
+        const L = COPY_LABELS[lang];
+        const dateStr = formatCopyDate(lang, L);
         const timeStr = `${formData.startTime || '--:--'} - ${formData.endTime || '--:--'}`;
-        const c = group.counts || {};
-        const parts = [];
-        if (c.regular) parts.push(`${c.regular} Regular`);
-        if (c.seniorSoldier) parts.push(`${c.seniorSoldier} Senior/Soldier`);
-        if (c.child) parts.push(`${c.child} Child`);
-        if (c.group) parts.push(`${c.group} Group (36₪)`);
-        const total = (c.regular || 0) + (c.seniorSoldier || 0) + (c.child || 0) + (c.group || 0);
+        const parts = countParts(group.counts, L);
         const contact = group.contact || {};
         const lines = [
             dateStr,
             timeStr,
-            formData.isWorkshop ? 'Workshop included' : null,
+            programLine(L),
             '',
-            `Group: ${group.name || `Group ${idx + 1}`}`,
-            group.status ? `Status: ${group.status}` : null,
-            contact.leaderName ? `Leader: ${contact.leaderName}` : null,
-            contact.leaderPhone ? `Phone: ${contact.leaderPhone}` : null,
-            contact.leaderEmail ? `Email: ${contact.leaderEmail}` : null,
-            contact.externalGuideName ? `External Guide: ${contact.externalGuideName}` : null,
-            contact.externalGuidePhone ? `Guide Phone: ${contact.externalGuidePhone}` : null,
+            `${L.group}: ${group.name || `${L.group} ${idx + 1}`}`,
+            group.status ? `${L.status}: ${group.status}` : null,
+            contact.leaderName ? `${L.leader}: ${contact.leaderName}` : null,
+            contact.leaderPhone ? `${L.phone}: ${contact.leaderPhone}` : null,
+            contact.leaderEmail ? `${L.email}: ${contact.leaderEmail}` : null,
+            contact.externalGuideName ? `${L.extGuide}: ${contact.externalGuideName}` : null,
+            contact.externalGuidePhone ? `${L.guidePhone}: ${contact.externalGuidePhone}` : null,
             '',
-            `Participants: ${parts.length ? parts.join(', ') : 'None recorded'}`, 
+            `${L.participants}: ${parts.length ? parts.join(', ') : L.noneRecorded}`,
         ].filter(l => l !== null).join('\n');
         copyText(lines).then(() => {
             setCopiedGroupIdx(idx);
@@ -831,7 +862,7 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
                                 <div className="form-row">
                                     <div className="form-group primary-form-group">
                                         <label htmlFor="title">Tour Title <span className="required-star">*</span></label>
-                                        <input id="title" name="title" value={formData.title} onChange={handleChange} required />
+                                        <input id="title" name="title" value={formData.title} onChange={handleChange} required dir="auto" />
                                     </div>
                                     <div className="form-group primary-form-group">
                                         <label htmlFor="primaryGuide">Primary Guide</label>
@@ -982,7 +1013,7 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
                                     <div className="form-row primary-group-row">
                                         <div className="form-group primary-form-group">
                                             <label>Group Name</label>
-                                            <input name="name" value={formData.groups[0]?.name || ''} onChange={(e) => handleChange(e, 0)} placeholder="e.g. Cohen Family" />
+                                            <input name="name" value={formData.groups[0]?.name || ''} onChange={(e) => handleChange(e, 0)} placeholder="e.g. Cohen Family" dir="auto" />
                                         </div>
                                         <div className="form-group primary-form-group">
                                             <label>Group Type</label>
@@ -1096,7 +1127,7 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
                                         return (
                                             <div key={idx} className="group-card">
                                                 <header className="group-card-header flex-between">
-                                                    <h4>{group.name || `Group ${idx + 1}`}</h4>
+                                                    <h4 dir="auto">{group.name || `Group ${idx + 1}`}</h4>
                                                     <div className="group-card-actions">
                                                         <button type="button" className="btn-icon-copy" onClick={() => handleCopyGroup(idx)} title="Copy group info">
                                                             {copiedGroupIdx === idx ? <Check size={16} /> : <Copy size={16} />}
@@ -1116,7 +1147,7 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
                                                 <div className="form-row">
                                                     <div className="form-group primary-form-group">
                                                         <label>Group Name</label>
-                                                        <input name="name" value={group.name} onChange={(e) => handleChange(e, idx)} placeholder="e.g. Cohen Family" />
+                                                        <input name="name" value={group.name} onChange={(e) => handleChange(e, idx)} placeholder="e.g. Cohen Family" dir="auto" />
                                                     </div>
                                                     <div className="form-group primary-form-group">
                                                         <label>Group Type</label>
