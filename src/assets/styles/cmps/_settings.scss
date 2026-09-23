@@ -1,0 +1,254 @@
+@use '../base/vars' as *;
+@use '../base/mixins' as *;
+
+// ── Settings page ─────────────────────────────────────────────────────────────
+
+.settings-page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: $spacing-xl $spacing-lg;
+
+    &__header {
+        display: flex;
+        align-items: flex-start;
+        gap: $spacing-lg;
+        margin-bottom: $spacing-xl;
+
+        .btn-back {
+            gap: $spacing-xs;
+            margin-top: 4px; // optical alignment with h1
+            white-space: nowrap;
+        }
+
+        h1 {
+            margin: 0 0 $spacing-xs;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: $clr-text-main;
+        }
+
+        p {
+            margin: 0;
+            color: $clr-text-muted;
+            font-size: 0.9rem;
+        }
+
+        // On mobile: back button takes its own row, title below at full width
+        @include for-mobile {
+            flex-direction: column;
+            gap: $spacing-sm;
+
+            .btn-back {
+                margin-top: 0;
+            }
+
+            h1 {
+                font-size: 1.3rem;
+            }
+        }
+    }
+
+    &__content {
+        @include flex-column;
+        gap: $spacing-lg;
+    }
+}
+
+// ── Settings card ─────────────────────────────────────────────────────────────
+
+.settings-card {
+    background: $clr-bg-card;
+    border: 1px solid $clr-border;
+    border-radius: $br-lg;
+    box-shadow: $shadow-soft;
+    overflow: hidden;
+
+    &__header {
+        @include flex-center;
+        justify-content: flex-start;
+        gap: $spacing-sm;
+        padding: $spacing-md $spacing-lg;
+        border-bottom: 1px solid $clr-border;
+        background: $clr-bg-main;
+
+        svg {
+            color: $clr-primary;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+            color: $clr-text-main;
+        }
+    }
+
+    &__loading {
+        @include flex-center;
+        gap: $spacing-sm;
+        padding: $spacing-xl;
+        color: $clr-text-muted;
+        font-size: 0.9rem;
+    }
+
+    &__body {
+        padding: $spacing-lg;
+        @include flex-column;
+        gap: $spacing-md;
+    }
+
+    &__description {
+        margin: 0;
+        font-size: 0.88rem;
+        color: $clr-text-muted;
+        line-height: 1.6;
+    }
+
+    &__actions {
+        display: flex;
+        gap: $spacing-sm;
+        flex-wrap: wrap;
+    }
+}
+
+// ── Mail status indicator ─────────────────────────────────────────────────────
+
+.mail-status {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    border-radius: $br-md;
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    &--connected {
+        background: rgba($clr-success, 0.08);
+        color: darken($clr-success, 10%);
+        border: 1px solid rgba($clr-success, 0.2);
+
+        .mail-status__icon {
+            color: $clr-success;
+            flex-shrink: 0;
+        }
+    }
+
+    &--disconnected {
+        background: rgba($clr-error, 0.06);
+        color: darken($clr-error, 10%);
+        border: 1px solid rgba($clr-error, 0.15);
+
+        svg {
+            color: $clr-error;
+            flex-shrink: 0;
+        }
+    }
+
+    &__info {
+        @include flex-column;
+        gap: 2px;
+    }
+
+    &__email {
+        font-weight: 600;
+        color: $clr-text-main;
+    }
+
+    &__meta {
+        font-size: 0.8rem;
+        color: $clr-text-muted;
+        font-weight: 400;
+    }
+}
+
+// ── Banners ───────────────────────────────────────────────────────────────────
+
+.settings-banner {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-md;
+    font-size: 0.88rem;
+    border-left: 3px solid transparent;
+
+    &--success {
+        background: rgba($clr-success, 0.08);
+        border-left-color: $clr-success;
+        color: darken($clr-success, 15%);
+
+        svg { color: $clr-success; flex-shrink: 0; }
+    }
+
+    &--error {
+        background: rgba($clr-error, 0.08);
+        border-left-color: $clr-error;
+        color: darken($clr-error, 10%);
+
+        svg { color: $clr-error; flex-shrink: 0; }
+    }
+}
+
+// ── Action buttons inside settings cards ─────────────────────────────────────
+// Give all three button variants consistent icon alignment and sizing here so
+// they don't depend on tour-form or other context-specific overrides.
+
+.settings-card__actions {
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger {
+        display: inline-flex;
+        align-items: center;
+        gap: $spacing-xs;
+        padding: $spacing-sm $spacing-md;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-radius: $br-md;
+        cursor: pointer;
+        transition: all $trans-fast;
+        white-space: nowrap;
+
+        svg { flex-shrink: 0; }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+
+    .btn-primary {
+        background: $clr-primary;
+        color: #fff;
+        border: none;
+        &:hover:not(:disabled) { background: $clr-primary-dark; }
+    }
+
+    .btn-secondary {
+        background: #f8fafc;
+        color: $clr-text-main;
+        border: 1px solid $clr-border;
+        &:hover:not(:disabled) { background: $clr-bg-main; border-color: #cbd5e1; }
+    }
+}
+
+// ── Danger button (color overrides; layout comes from .settings-card__actions) ─
+
+.settings-card__actions .btn-danger {
+    background: transparent;
+    color: $clr-error;
+    border: 1px solid rgba($clr-error, 0.35);
+
+    &:hover:not(:disabled) {
+        background: rgba($clr-error, 0.06);
+        border-color: $clr-error;
+    }
+}
+
+// ── Spinner animation ─────────────────────────────────────────────────────────
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.spin {
+    animation: spin 0.8s linear infinite;
+}

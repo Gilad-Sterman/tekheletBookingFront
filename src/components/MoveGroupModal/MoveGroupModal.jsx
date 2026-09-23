@@ -84,6 +84,9 @@ const MoveGroupModal = ({ group, sourceTourId, sourceTourDate, sourceTourStartTi
                                         </span>
                                     </button>
                                 ))}
+                                {toursOnDate.length > 0 && (
+                                    <div className="destination-divider">— or —</div>
+                                )}
                                 <button
                                     type="button"
                                     className={`destination-option destination-option--new ${selectedDestination === 'new' ? 'selected' : ''}`}

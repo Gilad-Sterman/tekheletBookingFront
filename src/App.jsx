@@ -2,10 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, Link } from 'react-router-dom';
 import Calendar from './components/Calendar/Calendar';
 import Dashboard from './components/Dashboard/Dashboard';
+import Settings from './components/Settings/Settings';
 import Login from './components/Login/Login';
 import { AuthProvider } from './context/AuthContext';
 import { useAuth } from './hooks/useAuth';
-import { LogOut } from 'lucide-react';
+import { LogOut, Settings as SettingsIcon } from 'lucide-react';
 
 // Separate ProtectedRoute component
 const ProtectedRoute = ({ children }) => {
@@ -43,6 +44,11 @@ function AppContent() {
               <p className="user-name">{user.name}</p>
               <p className="user-role">{user.role}</p>
             </div>
+            {user.role === 'Coordinator' && (
+              <Link to="/settings" className="btn-icon-nav flex-center" title="Settings">
+                <SettingsIcon size={18} />
+              </Link>
+            )}
             <button
               onClick={logout}
               className="btn-logout flex-center"
@@ -70,6 +76,14 @@ function AppContent() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Settings />
               </ProtectedRoute>
             }
           />

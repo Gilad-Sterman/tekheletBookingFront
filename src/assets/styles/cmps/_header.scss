@@ -56,11 +56,16 @@
             gap: 20px;
 
             @include for-mobile {
-                gap: $spacing-sm;
+                gap: $spacing-xs;
             }
 
             .user-info {
                 text-align: right;
+
+                // Hide name/role on mobile — not enough room once settings icon is added
+                @include for-mobile {
+                    display: none;
+                }
 
                 .user-name {
                     font-size: 0.85rem;
@@ -77,14 +82,21 @@
                 }
             }
 
-            .btn-logout {
+            .btn-logout,
+            .btn-icon-nav {
                 padding: $spacing-sm;
+                width: 36px;
+                height: 36px;
                 border-radius: $br-md;
                 border: 1px solid #e2e8f0;
                 background: #f8fafc;
                 cursor: pointer;
                 color: $clr-text-muted;
                 transition: all $trans-fast;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
 
                 &:hover {
                     background: #f1f5f9;

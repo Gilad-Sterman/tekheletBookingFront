@@ -90,4 +90,25 @@ export const tourService = {
     }
 };
 
+export const mailService = {
+    getStatus: async () => {
+        const res = await api.get('/mail/status');
+        return res.data;
+    },
+    disconnect: async () => {
+        const res = await api.post('/mail/disconnect');
+        return res.data;
+    },
+    sendTest: async () => {
+        const res = await api.post('/mail/test', {});
+        return res.data;
+    },
+    sweep: async () => {
+        const res = await api.post('/mail/sweep');
+        return res.data;
+    },
+    // Starts the OAuth flow — full-page redirect, not an API call
+    getConnectUrl: () => '/api/auth/microsoft'
+};
+
 export default api;
