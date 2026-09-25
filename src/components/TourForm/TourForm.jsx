@@ -754,7 +754,8 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
                                 type="button"
                                 className={`header-action-btn btn-secondary btn-copy ${copied ? 'copied' : ''}`}
                                 onClick={handleCopy}
-                                title="Copy tour info to clipboard"
+                                disabled={isDirty}
+                                title={isDirty ? 'Save changes before copying' : 'Copy tour info to clipboard'}
                             >
                                 {copied ? <Check size={15} /> : <Copy size={15} />}
                             </button>
@@ -995,11 +996,11 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
                                     <div className="flex-between">
                                         <h3>Primary Group</h3>
                                         <div className="group-card-actions">
-                                            <button type="button" className="btn-icon-copy" onClick={() => handleCopyGroup(0)} title="Copy group info">
+                                            <button type="button" className="btn-icon-copy" onClick={() => handleCopyGroup(0)} disabled={isDirty} title={isDirty ? 'Save changes before copying' : 'Copy group info'}>
                                                 {copiedGroupIdx === 0 ? <Check size={16} /> : <Copy size={16} />}
                                             </button>
                                             {isEditing && canEdit && (
-                                                <button type="button" className="btn-icon-move" onClick={() => setMoveGroupIdx(0)} title="Move this group to another tour">
+                                                <button type="button" className="btn-icon-move" onClick={() => setMoveGroupIdx(0)} disabled={isDirty} title={isDirty ? 'Save changes before moving' : 'Move this group to another tour'}>
                                                     <ArrowRightFromLine size={16} />
                                                 </button>
                                             )}
@@ -1129,11 +1130,11 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
                                                 <header className="group-card-header flex-between">
                                                     <h4 dir="auto">{group.name || `Group ${idx + 1}`}</h4>
                                                     <div className="group-card-actions">
-                                                        <button type="button" className="btn-icon-copy" onClick={() => handleCopyGroup(idx)} title="Copy group info">
+                                                        <button type="button" className="btn-icon-copy" onClick={() => handleCopyGroup(idx)} disabled={isDirty} title={isDirty ? 'Save changes before copying' : 'Copy group info'}>
                                                             {copiedGroupIdx === idx ? <Check size={16} /> : <Copy size={16} />}
                                                         </button>
                                                         {isEditing && canEdit && (
-                                                            <button type="button" className="btn-icon-move" onClick={() => setMoveGroupIdx(idx)} title="Move this group to another tour">
+                                                            <button type="button" className="btn-icon-move" onClick={() => setMoveGroupIdx(idx)} disabled={isDirty} title={isDirty ? 'Save changes before moving' : 'Move this group to another tour'}>
                                                                 <ArrowRightFromLine size={16} />
                                                             </button>
                                                         )}

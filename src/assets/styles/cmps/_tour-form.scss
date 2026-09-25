@@ -69,9 +69,14 @@
     align-items: center;
     transition: background $trans-fast, color $trans-fast;
 
-    &:hover {
+    &:hover:not(:disabled) {
         background-color: rgba($clr-primary, 0.08);
         color: $clr-primary;
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
     }
 }
 
@@ -215,6 +220,11 @@
                     align-items: center;
                     justify-content: center;
                     color: $clr-text-muted;
+
+                    &:disabled {
+                        opacity: 0.5;
+                        cursor: not-allowed;
+                    }
 
                     &.copied {
                         background-color: #dcfce7;

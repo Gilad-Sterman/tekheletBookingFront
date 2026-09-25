@@ -296,9 +296,14 @@
     justify-content: center;
     transition: background $trans-fast, color $trans-fast;
 
-    &:hover {
+    &:hover:not(:disabled) {
         background: rgba($clr-primary, 0.1);
         color: $clr-primary-dark;
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
     }
 }
 
