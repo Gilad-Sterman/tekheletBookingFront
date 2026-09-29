@@ -151,6 +151,7 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
         language: 'English',
         color: '#134869',
         primaryGuide: '',
+        customGuideName: '',
         assignedGuides: [],
         isWorkshop: false,
         isShiur: false,
@@ -206,7 +207,7 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
             setFormData(prev => ({
                 ...prev,
                 ...tour,
-                primaryGuide: tour.primaryGuide?._id || tour.primaryGuide || '',
+                primaryGuide: tour.primaryGuide?._id || tour.primaryGuide || (tour.customGuideName ? '__other__' : ''),
                 assignedGuides: tour.assignedGuides?.map(g => g._id || g) || [],
                 createdBy: sanitizedCreatedBy,
                 groups: sanitizedGroups.length ? sanitizedGroups : prev.groups
@@ -507,7 +508,8 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
         const dataToSave = {
             ...formData,
             endTimeOverride,
-            primaryGuide: formData.primaryGuide === '' ? null : formData.primaryGuide,
+            primaryGuide: formData.primaryGuide && formData.primaryGuide !== '__other__' ? formData.primaryGuide : null,
+            customGuideName: formData.primaryGuide === '__other__' ? (formData.customGuideName || '') : '',
             groups: formData.groups.map(group => ({
                 ...group,
                 engagement: {
@@ -543,7 +545,8 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
         if (!canEdit) return;
         const dataToSave = {
             ...formData,
-            primaryGuide: formData.primaryGuide === '' ? null : formData.primaryGuide,
+            primaryGuide: formData.primaryGuide && formData.primaryGuide !== '__other__' ? formData.primaryGuide : null,
+            customGuideName: formData.primaryGuide === '__other__' ? (formData.customGuideName || '') : '',
             groups: formData.groups.map(group => ({
                 ...group,
                 engagement: {
@@ -874,7 +877,18 @@ const TourForm = ({ tour, guides = [], currentUser, error, allTours = [], onSave
                                             ) : (
                                                 guides.map(g => <option key={g._id} value={g._id}>{g.name}</option>)
                                             )}
+                                            <option value="__other__">Other…</option>
                                         </select>
+                                        {formData.primaryGuide === '__other__' && (
+                                            <input
+                                                name="customGuideName"
+                                                value={formData.customGuideName || ''}
+                                                onChange={handleChange}
+                                                placeholder="Guide name"
+                                                dir="auto"
+                                                style={{ marginTop: '6px' }}
+                                            />
+                                        )}
                                     </div>
                                 </div>
                                 <div className="form-row">

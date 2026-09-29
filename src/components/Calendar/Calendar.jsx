@@ -249,6 +249,7 @@ const Calendar = () => {
                     language: currentFormData.language,
                     color: currentFormData.color,
                     primaryGuide: currentFormData.primaryGuide === '' ? null : currentFormData.primaryGuide,
+                    customGuideName: currentFormData.customGuideName || '',
                     isWorkshop: currentFormData.isWorkshop,
                     isShiur: currentFormData.isShiur,
                     groups: [movedGroup],
@@ -310,8 +311,9 @@ const Calendar = () => {
             );
         }
 
-        const totalPeople = extendedProps.groups?.reduce((sum, g) =>
-            sum + (g.counts?.regular || 0) + (g.counts?.seniorSoldier || 0) + (g.counts?.child || 0) + (g.counts?.group || 0), 0) || 0;
+        const activeGroups = extendedProps.groups?.filter(g => g.status !== 'Cancelled' && g.status !== 'canceled') || [];
+        const totalPeople = activeGroups.reduce((sum, g) =>
+            sum + (g.counts?.regular || 0) + (g.counts?.seniorSoldier || 0) + (g.counts?.child || 0) + (g.counts?.group || 0), 0);
 
         // Format time for display (remove leading zero and :00 seconds)
         const formatTime = (time) => {
@@ -325,8 +327,8 @@ const Calendar = () => {
 
         const allGroupsCancelled = extendedProps.groups?.length > 0 && extendedProps.groups.every(g => g.status === 'Cancelled' || g.status === 'canceled');
 
-        const totalGroups = extendedProps.groups?.length || 0;
-        const paidCount = totalGroups > 0 ? extendedProps.groups.filter(g => g.booking?.prepaid).length : 0;
+        const totalGroups = activeGroups.length;
+        const paidCount = activeGroups.filter(g => g.booking?.prepaid).length;
         const paymentStatus = totalGroups === 0
             ? ''
             : paidCount === 0
@@ -350,12 +352,12 @@ const Calendar = () => {
                     )}
                     <span className="event-info-pill lang">{extendedProps.language?.substring(0, 2).toUpperCase()}</span>
                     <span className={`event-info-pill people ${paymentStatus}`}>👥 {totalPeople}</span>
-                    {(extendedProps.groups?.length || 0) > 1 && (
-                        <span className="event-info-pill groups">{extendedProps.groups.length} grps</span>
+                    {activeGroups.length > 1 && (
+                        <span className="event-info-pill groups">{activeGroups.length} grps</span>
                     )}
-                    {extendedProps.primaryGuide && (
-                        <span className="event-info-pill guide" title={extendedProps.primaryGuide?.name}>
-                            👤 {extendedProps.primaryGuide?.name?.split(' ')[0]}
+                    {(extendedProps.primaryGuide || extendedProps.customGuideName) && (
+                        <span className="event-info-pill guide" title={extendedProps.primaryGuide?.name || extendedProps.customGuideName}>
+                            👤 {extendedProps.primaryGuide?.name?.split(' ')[0] || extendedProps.customGuideName}
                         </span>
                     )}
                 </div>
@@ -374,6 +376,7 @@ const Calendar = () => {
             extProps.groups?.some(g => g.name?.toLowerCase().includes(q)) ||
             extProps.groups?.some(g => g.contact?.leaderName?.toLowerCase().includes(q)) ||
             extProps.primaryGuide?.name?.toLowerCase().includes(q) ||
+            extProps.customGuideName?.toLowerCase().includes(q) ||
             extProps.date?.includes(q) ||
             extProps.createdBy?.toLowerCase().includes(q)
         );
@@ -469,9 +472,11 @@ const Calendar = () => {
                     {upcomingTours.length > 0 ? (
                         upcomingTours.map(tour => {
                             const allGroupsCancelled = tour.groups?.length > 0 && tour.groups.every(g => g.status === 'Cancelled' || g.status === 'canceled');
+                            const activeGroups = tour.groups?.filter(g => g.status !== 'Cancelled' && g.status !== 'canceled') || [];
+                            const cancelledCount = (tour.groups?.length || 0) - activeGroups.length;
 
-                            const totalGroups = tour.groups?.length || 0;
-                            const paidCount = totalGroups > 0 ? tour.groups.filter(g => g.booking?.prepaid).length : 0;
+                            const totalGroups = activeGroups.length;
+                            const paidCount = activeGroups.filter(g => g.booking?.prepaid).length;
                             const paymentText = totalGroups === 0
                                 ? ''
                                 : totalGroups === 1
@@ -496,13 +501,16 @@ const Calendar = () => {
                                         {tour.isWorkshop && <span className="workshop-tag">WS</span>}
                                         <span className="lang-tag">{tour.language?.substring(0, 2).toUpperCase()}</span>
                                         <span className="people-tag">
-                                            👥 {tour.groups?.reduce((sum, g) => sum + (g.counts?.regular || 0) + (g.counts?.seniorSoldier || 0) + (g.counts?.child || 0) + (g.counts?.group || 0), 0) || 0}
+                                            👥 {activeGroups.reduce((sum, g) => sum + (g.counts?.regular || 0) + (g.counts?.seniorSoldier || 0) + (g.counts?.child || 0) + (g.counts?.group || 0), 0)}
                                         </span>
                                         {paymentText && (
                                             <span className={`payment-tag ${paidCount === 0 ? 'unpaid' : paidCount === totalGroups ? 'paid' : 'partial'}`}>{paymentText}</span>
                                         )}
-                                        {(tour.groups?.length || 0) > 1 && (
-                                            <span className="groups-tag">🗂 {tour.groups.length} groups</span>
+                                        {activeGroups.length > 1 && (
+                                            <span className="groups-tag">🗂 {activeGroups.length} groups</span>
+                                        )}
+                                        {cancelledCount > 0 && !allGroupsCancelled && (
+                                            <span className="cancelled-tag">{cancelledCount} cancelled</span>
                                         )}
                                     </div>
                                 </div>
